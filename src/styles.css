@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Bootstrap & Icons */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* --- TA CHARTE GRAPHIQUE --- */
+:root {
+    --even-teal: #008CBA; /* Le bleu turquoise de ton logo */
+    --even-dark: #007196; /* Version plus foncée pour le survol */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Classes utilitaires personnalisées */
+.text-teal { color: var(--even-teal) !important; }
+.bg-teal { background-color: var(--even-teal) !important; }
+
+/* Boutons arrondis */
+.btn-teal {
+    background-color: var(--even-teal);
+    color: white;
+    border-radius: 50px; /* Forme de pilule */
+    padding: 8px 24px;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.btn-teal:hover { background-color: var(--even-dark); color: white; }
+
+/*btn connexion*/
+.btn-even {
+    background-color: var(--even-teal) !important;
+    color: white !important;
+    border: 2px solid var(--even-teal) !important;
+    border-radius: 50px !important; /* Arrondi pilule */
+    padding: 8px 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-even:hover {
+    background-color: var(--even-dark) !important;
+    border-color: var(--even-dark) !important;
+    color: white !important;
+}
+
+/* Le bouton CONTOUR (Pour INSCRIPTION) */
+.btn-outline-even {
+    background-color: white !important; /* Fond blanc */
+    color: var(--even-teal) !important; /* Texte bleu */
+    border: 2px solid var(--even-teal) !important; /* Bordure bleue */
+    border-radius: 50px !important;
+    padding: 8px 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-even:hover {
+    background-color: var(--even-teal) !important; /* Devient bleu au survol */
+    color: white !important; /* Texte devient blanc */
+}
+
+/* Cartes Services (Coins très arrondis) */
+.rounded-4 { border-radius: 1.5rem !important; }
+.rounded-5 { border-radius: 2rem !important; }
+
