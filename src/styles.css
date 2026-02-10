@@ -2,7 +2,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-/* --- TA CHARTE GRAPHIQUE --- */
+/* --- CHARTE GRAPHIQUE --- */
 :root {
     --even-teal: #008CBA; /* Le bleu turquoise de ton logo */
     --even-dark: #007196; /* Version plus foncée pour le survol */
@@ -66,7 +66,7 @@ body {
     color: white !important; /* Texte devient blanc */
 }
 
-/* Cartes Services (Coins très arrondis) */
+/* Cartes Services (Coins arrondis) */
 .rounded-4 { border-radius: 1.5rem !important; }
 .rounded-5 { border-radius: 2rem !important; }
 
