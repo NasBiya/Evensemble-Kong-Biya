@@ -19,7 +19,7 @@ app.get('/api/events', async (req, res) => {
                 engine: 'google_events',
                 q: query,
                 api_key: process.env.GOOGLE_API_KEY,
-                gl: 'fr',
+             
             }
         });
         
