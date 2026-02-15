@@ -1,0 +1,49 @@
+/* Couleurs */
+.text-teal { color: #008CBA !important; }
+.bg-teal { background-color: #008CBA !important; }
+
+/* Scrollbar invisible pour la liste */
+.overflow-auto::-webkit-scrollbar {
+    width: 6px;
+}
+.overflow-auto::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+/* Boutons */
+.btn-teal {
+    background-color: #008CBA;
+    border: none;
+}
+.btn-teal:hover {
+    background-color: #007196;
+}
+
+/* Style de l'input recherche */
+.input-group-text { background: white; }
+.form-control:focus { box-shadow: none; }
+
+/* Petite police pour le popup */
+.x-small { font-size: 0.75rem; }
+
+/* Curseur main pour montrer que c'est cliquable */
+.event-card {
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    /* Bordure invisible par défaut */
+    border: 2px solid transparent; 
+}
+
+/* La classe qui s'ajoute quand on clique */
+.active-card {
+    border-color: #008CBA !important; 
+    box-shadow: 0 0 15px rgba(0, 140, 186, 0.5) !important; 
+    transform: scale(1.02);
+}
+
+/* Style de l'étoile au survol*/
+.bi-star:hover {
+    color: yellow !important;
+    cursor: pointer;
+}
