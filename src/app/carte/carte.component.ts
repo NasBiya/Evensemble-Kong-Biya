@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet'; // Import de Leaflet
+import { FavorisService } from '../favoris.service'; // importer le service
 
 @Component({
   selector: 'app-search',
@@ -93,6 +94,9 @@ export class CarteComponent implements AfterViewInit { // On utilise AfterViewIn
     }
   ];
 
+  // injecte de service
+  constructor(public favorisService: FavorisService) {}
+
   ngAfterViewInit(): void {
     this.initMap();
   }
@@ -163,5 +167,10 @@ export class CarteComponent implements AfterViewInit { // On utilise AfterViewIn
       // Ouvre le popup du marqueur
       marker.openPopup();
     }
+  }
+
+  onToggleFavori(event: any, mouseEvent: Event): void {
+    mouseEvent.stopPropagation(); // Empêche la carte de bouger quand on clique juste sur l'étoile
+    this.favorisService.toggleFavori(event);
   }
 }

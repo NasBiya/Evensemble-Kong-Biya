@@ -35,7 +35,12 @@
           <p class="card-text small text-muted mb-1">{{ event.location }}</p>
           <!--<p class="mb-0 fw-bold">{{ event.price }}</p>-->
           
-          <i class="bi bi-star position-absolute bottom-0 end-0 m-2 fs-5 text-teal"></i>
+          <i class="bi position-absolute top-0 end-0 m-2 fs-5" 
+            style="z-index: 10; text-shadow: 0 0 3px black;"
+            [ngClass]="favorisService.isFavori(event.id) ? 'bi-star-fill text-warning' : 'bi-star text-white'"
+            (click)="onToggleFavori(event, $event)">
+          </i>
+          
         </div>
       </div>
     </div>
