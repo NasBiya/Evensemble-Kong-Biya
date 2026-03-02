@@ -1,5 +1,6 @@
 //api hotel
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 
 
@@ -7,7 +8,7 @@ router.get('/hotels', async (req, res) => {
     const { city, check_in, check_out } = req.query;
     
     try {
-        const response = await axios.get(SERP_BASE_URL, {
+        const response = await axios.get(process.env.SERP_BASE_URL, {
             params: {
                 engine: 'google_hotels', 
                 q: `${city}`,

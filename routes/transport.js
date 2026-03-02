@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 
 router.get('/api/transport', async (req, res) => {
@@ -38,7 +39,7 @@ router.get('/api/transport', async (req, res) => {
     }
 
     try {
-        const response = await axios.get(SERP_BASE_URL, { params: serpParams });
+        const response = await axios.get(process.env.SERP_BASE_URL, { params: serpParams });
         res.json(response.data);
 
     } catch (error) {

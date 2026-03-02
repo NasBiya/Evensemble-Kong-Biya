@@ -1,11 +1,12 @@
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 
 router.get('/api/events', async (req, res) => {
     const { query } = req.query;
     
     try {
-        const response = await axios.get(SERP_BASE_URL, {
+        const response = await axios.get(process.env.SERP_BASE_URL, {
             params: {
                 engine: 'google_events',
                 q: query,
