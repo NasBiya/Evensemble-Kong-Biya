@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,6 +11,13 @@ const SERP_BASE_URL = 'https://serpapi.com/search.json';
 app.use(cors());
 app.use(express.json());
 
+// connexion à mangodb
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connecté à MongoDB avec succès !'))
+  .catch((err) => console.error('Erreur de connexion MongoDB :', err));
+
+
+//API evenement
 app.get('/api/events', async (req, res) => {
     const { query } = req.query;
     
@@ -30,6 +38,7 @@ app.get('/api/events', async (req, res) => {
     }
 });
 
+//api hotel
 app.get('/api/hotels', async (req, res) => {
     const { city, check_in, check_out } = req.query;
     
@@ -102,5 +111,5 @@ app.get('/api/transport', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Serveur démarre sur la porte http://localhost:${PORT}`);
 });
