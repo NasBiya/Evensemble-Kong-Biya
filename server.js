@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const connectDB = require('./config/db');
+
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,7 +13,7 @@ const SERP_BASE_URL = 'https://serpapi.com/search.json';
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/events', async (req, res) => {
+/*app.get('/api/events', async (req, res) => {
     const { query } = req.query;
     
     try {
@@ -99,8 +102,8 @@ app.get('/api/transport', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Erreur lors de la récupération du trajet' });
     }
-});
-
+});*/
+app.use('/api/auth', require('./routes/auth'));
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
