@@ -100,7 +100,7 @@ app.get('/api/transport', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Erreur lors de la récupération du trajet' });
     }
-});*/
+});
 app.use('/api/auth', require('./routes/auth'));
 app.listen(PORT, () => {
     console.log(`Serveur démarre sur la porte http://localhost:${PORT}`);
