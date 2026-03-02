@@ -1,20 +1,33 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-// On définit le "moule" d'un utilisateur
-const userSchema = new mongoose.Schema({
-  identifiant: { 
-    type: String, 
-    required: true, 
-    unique: true // Impossible d'avoir 2 fois le même identifiant
+const UserSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
   },
-  password: { 
-    type: String, 
-    required: true 
-  },
-  // Le tableau qui stockera les ID des événements favoris
-  favoris: [{ 
-    type: Number 
-  }] 
+  password: {
+    type: String,
+    required: true
+  }
 });
 
-module.exports = mongoose.model('User', userSchema);
+UserSchema.pre('save', async function() {
+  if (!this.isModified('password')) return;
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (err) {
+    throw err;
+  }
+});
+
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+module.exports = mongoose.model('User', UserSchema);
