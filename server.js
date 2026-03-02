@@ -16,7 +16,6 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connecté à MongoDB avec succès !'))
   .catch((err) => console.error('Erreur de connexion MongoDB :', err));
 
-
 //API evenement
 app.get('/api/events', async (req, res) => {
     const { query } = req.query;
