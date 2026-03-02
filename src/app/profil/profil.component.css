@@ -1,0 +1,27 @@
+/* Couleur */
+.text-teal {
+    color: #008CBA !important;
+}
+
+.bg-teal {
+    background-color: #008CBA !important;
+}
+
+.btn-teal {
+    background-color: #008CBA;
+    border-color: #008CBA;
+}
+
+.btn-teal:hover {
+    background-color: #007196;
+    border-color: #007196;
+}
+
+/* les puces de la liste sont bien visibles */
+ul {
+    padding-left: 1rem;
+}
+li::marker {
+    color: #212529; /* Couleur noire pour les puces */
+    font-size: 1.2rem;
+}

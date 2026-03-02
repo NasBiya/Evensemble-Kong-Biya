@@ -1,0 +1,56 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+
+    <div class="col-md-2 border-end p-4 bg-white d-none d-lg-block">
+      <h6 class="fw-bold mb-3">FILTRES</h6>
+      
+      <div class="mb-4">
+        <p class="small fw-bold text-muted mb-2">DATE</p>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">Aujourd'hui</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">Demain</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">Choisir une date</label></div>
+      </div>
+
+      <div>
+        <p class="small fw-bold text-muted mb-2">AVIS</p>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">Tout</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">1-3 étoiles</label></div>
+        <div class="form-check"><input class="form-check-input" type="checkbox"> <label class="small">3-5 étoiles</label></div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 p-3 overflow-auto" style="height: calc(100vh - 80px);">
+      <h5 class="fw-bold mb-3">Événements à <span class="text-dark">Le Mans</span></h5>
+
+      <div class="card mb-3 border rounded-4 shadow-sm overflow-hidden" *ngFor="let event of events" (click)="onSelectEvent(event)" 
+           [class.active-card]="selectedEvent === event">
+        <div class="position-relative">
+            <div class="bg-warning p-3 text-center position-relative" style="height: 100px;">
+                <h3 class="fw-bold text-danger display-6" style="font-family: Impact, sans-serif;">MUSIC <br> Festival</h3>
+            </div>
+        </div>
+        <div class="card-body p-2 position-relative">
+          <h6 class="card-title fw-bold mb-1">{{ event.title }}</h6>
+          <p class="card-text small text-muted mb-0">{{ event.date }}</p>
+          <p class="card-text small text-muted mb-1">{{ event.location }}</p>
+          <!--<p class="mb-0 fw-bold">{{ event.price }}</p>-->
+          
+          <i class="bi position-absolute top-0 end-0 m-2 fs-5" 
+            style="z-index: 10; text-shadow: 0 0 3px black;"
+            [ngClass]="favorisService.isFavori(event.id) ? 'bi-star-fill text-warning' : 'bi-star text-white'"
+            (click)="onToggleFavori(event, $event)">
+          </i>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-7 p-0 position-relative">
+    <div class="col-md-6 col-lg-7 p-0 position-relative">
+    
+        <div id="map" style="height: 100%; width: 100%; min-height: 600px;"></div>
+
+    </div>
+    </div>
+  </div>
+</div>

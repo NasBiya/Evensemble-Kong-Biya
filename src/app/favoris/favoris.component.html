@@ -1,0 +1,24 @@
+<div class="container d-flex flex-column align-items-center justify-content-center py-5 min-vh-100">
+  <h3 class="fw-bold text-teal text-uppercase mb-4">FAVORIES</h3>
+
+  <div class="card bg-teal border-0 rounded-5 shadow-lg p-4" style="width: 450px; min-height: 400px;">
+    <div class="card-body d-flex flex-column gap-3">
+      
+      <p *ngIf="mesFavoris.length === 0" class="text-white text-center mt-4">Vous n'avez pas encore de favoris.</p>
+
+      <div *ngFor="let fav of mesFavoris" class="border border-dark rounded-4 overflow-hidden position-relative" style="background-color: #008CBA;">
+        
+        <i class="bi bi-trash-fill text-white position-absolute top-0 end-0 m-2" style="cursor: pointer;" (click)="retirer(fav)"></i>
+
+        <div class="bg-warning text-center p-2" style="height: 60px;">
+           <h5 class="fw-bold text-danger m-0" style="font-family: Impact;">MUSIC<br>FESTIVAL</h5>
+        </div>
+        <div class="p-2 text-dark">
+           <h6 class="fw-bold mb-0 text-white">{{ fav.title }}</h6>
+           <small class="text-white">{{ fav.date }}<br>{{ fav.location }}</small><br>
+        </div>
+    </div>
+
+    </div>
+  </div>
+</div>
