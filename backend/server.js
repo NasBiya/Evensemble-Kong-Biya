@@ -15,6 +15,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/hotels", require("./routes/hotels"));
 app.use("/api/events", require("./routes/events"));
 app.use("/api/transport", require("./routes/transport"));
+
 app.listen(PORT, () => {
   console.log(`Serveur démarre sur la porte http://localhost:${PORT}`);
 });

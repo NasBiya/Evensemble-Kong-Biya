@@ -1,24 +1,30 @@
 <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100 py-5">
 
-    <div class="text-center">
-        <img src="assets/logo_nom.png" alt="Logo" height="180" class="mb-2">
-        <!--<h3 class="fw-bold text-dark text-uppercase m-0" style="letter-spacing: 2px;">EVENSEMBLE</h3>-->
-    </div>
+  <div class="text-center">
+    <img src="assets/logo_nom.png" alt="Logo" height="180" class="mb-2">
+  </div>
 
   <div class="card bg-teal text-white p-4 rounded-5 shadow-lg" style="max-width: 450px; width: 100%;">
     <div class="card-body text-center">
       
       <h3 class="fw-bold text-uppercase mb-4">Connectez-vous</h3>
 
-      <form>
+      <div *ngIf="messageErreur" class="alert alert-danger py-2 small fw-bold">
+        {{ messageErreur }}
+      </div>
+
+      <form (ngSubmit)="onLogin()">
+        
         <div class="mb-3 text-start">
           <label class="form-label small fw-bold text-uppercase ms-2">Identifiant</label>
-          <input type="text" class="form-control rounded-pill bg-transparent border-white text-white placeholder-white" style="border: 2px solid white;">
+          <input type="text" [(ngModel)]="email" name="email" required
+            class="form-control rounded-pill bg-transparent border-white text-white placeholder-white" style="border: 2px solid white;">
         </div>
 
         <div class="mb-3 text-start">
           <label class="form-label small fw-bold text-uppercase ms-2">Mots de passe</label>
-          <input type="password" class="form-control rounded-pill bg-transparent border-white text-white" style="border: 2px solid white;">
+          <input type="password" [(ngModel)]="password" name="password" required
+            class="form-control rounded-pill bg-transparent border-white text-white" style="border: 2px solid white;">
         </div>
 
         <div class="mb-4">
