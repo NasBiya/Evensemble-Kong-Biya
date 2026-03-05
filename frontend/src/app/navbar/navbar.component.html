@@ -20,8 +20,14 @@
       </div>
 
       <div class="d-flex gap-2 justify-content-center">
-        <a routerLink="/login" class="btn btn-even">CONNEXION</a>
-        <a routerLink="/register" class="btn btn-outline-even">INSCRIPTION</a>
+        <ng-container *ngIf="!estConnecte(); else logoutButton">
+          <a routerLink="/login" class="btn btn-even">CONNEXION</a>
+          <a routerLink="/register" class="btn btn-outline-even">INSCRIPTION</a>
+        </ng-container>
+        <ng-template #logoutButton>
+          <a routerLink="/profil" class="btn btn-outline-even">PROFIL</a>
+          <button (click)="seDeconnecter()" class="btn btn-even">DÉCONNEXION</button>
+        </ng-template>
       </div>
 
     </div>
