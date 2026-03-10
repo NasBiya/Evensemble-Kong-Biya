@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-router.get('/api/events', async (req, res) => {
+router.get('/', async (req, res) => {
     const { query } = req.query;
     
     try {
@@ -10,8 +10,9 @@ router.get('/api/events', async (req, res) => {
             params: {
                 engine: 'google_events',
                 q: query,
+                hl: "en",
+                gl: "us",
                 api_key: process.env.GOOGLE_API_KEY,
-             
             }
         });
         

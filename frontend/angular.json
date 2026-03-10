@@ -56,17 +56,20 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "evensemble:build:production"
-            },
-            "development": {
-              "buildTarget": "evensemble:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
+  "builder": "@angular-devkit/build-angular:dev-server",
+  "options": {
+    "proxyConfig": "proxy.conf.json"
+  },
+  "configurations": {
+    "production": {
+      "buildTarget": "evensemble:build:production"
+    },
+    "development": {
+      "buildTarget": "evensemble:build:development"
+    }
+  },
+  "defaultConfiguration": "development"
+},
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
@@ -88,8 +91,7 @@
               "src/styles.css"
             ],
             "scripts": []
-          }
-        }
+          }        }
       }
     }
   },

@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-white py-3 shadow-sm sticky-top">
   <div class="container">
-    
+
     <a class="navbar-brand" routerLink="/" style="cursor: pointer;">
-        <img src="assets/logo.png" alt="Evensemble Logo" height="90">
+      <img src="assets/logo.png" alt="Evensemble Logo" height="90">
     </a>
 
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -10,15 +10,24 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarContent">
-      
+
+      <!-- Search bar -->
       <div class="mx-auto my-3 my-lg-0 w-50">
         <div class="input-group border rounded-pill overflow-hidden ps-3">
-          <input type="text" class="form-control border-0 shadow-none" placeholder="Recherche...">
-          <button class="btn bg-white border-0 text-muted" type="button">
-            <i class="bi bi-search"></i> </button>
+          <input
+            type="text"
+            class="form-control border-0 shadow-none"
+            placeholder="Recherche..."
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="onSearch()"
+          />
+          <button class="btn bg-white border-0 text-muted" type="button" (click)="onSearch()">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
       </div>
 
+      <!-- Auth buttons -->
       <div class="d-flex gap-2 justify-content-center">
         <ng-container *ngIf="!estConnecte(); else logoutButton">
           <a routerLink="/login" class="btn btn-even">CONNEXION</a>

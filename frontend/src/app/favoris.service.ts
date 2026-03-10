@@ -14,7 +14,7 @@ export class FavorisService {
 
   // Ajouter ou retirer un favori 
   toggleFavori(event: any) {
-    const index = this.favorisList.findIndex(e => e.id === event.id);
+    const index = this.favorisList.findIndex(e => e.title === event.title);
     if (index > -1) {
       // S'il est déjà dans la liste, on le retire
       this.favorisList.splice(index, 1);
@@ -25,7 +25,7 @@ export class FavorisService {
   }
 
   // Vérifier si un événement est dans les favoris
-  isFavori(eventId: number): boolean {
-    return this.favorisList.some(e => e.id === eventId);
+  isFavori(eventId: string): boolean {
+    return this.favorisList.some(e => e.title === eventId);
   }
 }

@@ -1,17 +1,31 @@
 import { Component } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  searchQuery = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private searchService: SearchService
+  ) {}
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.searchService.setQuery(this.searchQuery.trim());
+    }
+  }
 
   estConnecte(): boolean {
     return this.authService.estConnecte();
@@ -27,7 +41,6 @@ export class NavbarComponent {
         },
         error: (erreur) => {
           console.error('Erreur lors déconnexion:', erreur);
-          // On déconnecte quand même localement
           localStorage.removeItem('token');
           this.router.navigate(['/login']);
         }
