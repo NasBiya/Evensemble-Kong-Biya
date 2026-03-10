@@ -29,7 +29,6 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string | null = null;
   private mapReady = false;
 
-  // ── Filter state ──────────────────────────────────────────────────────────
   filterAujourdhui = false;
   filterDemain = false;
   filterDate = false;
