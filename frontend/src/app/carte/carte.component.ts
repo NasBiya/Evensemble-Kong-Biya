@@ -256,9 +256,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const popupContent = `
       <div style="width: 200px; text-align: center;">
-        <div style="background-color: #ffc107; padding: 5px; border-radius: 5px 5px 0 0;">
-          <h5 style="color: #dc3545; margin: 0; font-family: Impact;">MUSIC Festival</h5>
-        </div>
+
         <div style="background-color: #008CBA; color: white; padding: 10px; border-radius: 0 0 5px 5px;">
           <h6 style="margin: 0; text-transform: uppercase; font-weight: bold;">${event.title}</h6>
           <p style="font-size: 12px; margin: 5px 0;">${event.displayDate} · ${event.location}</p>
