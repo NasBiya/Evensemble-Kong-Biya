@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -45,8 +46,17 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public favoritesService: FavoritesService,
     private eventService: EventService,
-    private searchService: SearchService
-  ) {}
+    private searchService: SearchService,
+    private router: Router,  // <-- NOUVEAU
+    private ngZone: NgZone
+  ) {
+    (window as any).allerVersTransport = (adresseArrivee: string) => {
+      this.ngZone.run(() => {
+        // On redirige vers /transport en envoyant l'adresse dans l'URL !
+        this.router.navigate(['/transport'], { queryParams: { arrivee: adresseArrivee } });
+      });
+    };
+  }
 
   ngOnInit(): void {
   // On force le rafraîchissement des favoris au cas où
@@ -256,6 +266,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const marker = L.marker([lat, lng], { icon: myIcon }).addTo(this.map);
+    const adressePropre = event.location ? event.location.replace(/'/g, "\\'") : '';
 
     const popupContent = `
       <div style="width: 200px; text-align: center;">
@@ -265,7 +276,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
           <p style="font-size: 12px; margin: 5px 0;">${event.displayDate} · ${event.location}</p>
           <div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px;">
             <button style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">LOGEMENT</button>
-            <button style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">TRANSPORT</button>
+            <button onclick="window.allerVersTransport('${adressePropre}')" style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">TRANSPORT</button>
           </div>
         </div>
       </div>

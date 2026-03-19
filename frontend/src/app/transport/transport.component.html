@@ -1,0 +1,140 @@
+<div class="container py-4 min-vh-100">
+  
+  <h3 class="text-teal fw-bold mb-4">Transports</h3>
+
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-8 col-lg-6 d-flex flex-column gap-3">
+      <input type="text" [(ngModel)]="depart" class="form-control rounded-pill border-teal px-4 py-2 fw-medium" placeholder="Départ...">
+      
+      <input type="text" [(ngModel)]="arrivee" class="form-control rounded-pill border-teal px-4 py-2 fw-medium" placeholder="Destination...">
+      
+      <div class="text-center mt-3">
+        <button (click)="lancerRecherche()" class="btn btn-outline-teal rounded-pill px-5 py-2 fw-bold text-uppercase">
+          <span *ngIf="enChargement" class="spinner-border spinner-border-sm me-2"></span>
+          Partir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    
+    <div class="col-md-4 col-lg-3">
+      <div class="filter-sidebar p-4 rounded-4 border-purple shadow-sm">
+        
+        <h5 class="fw-bold text-decoration-underline text-center mb-4">Type de véhicules</h5>
+        
+        <div class="d-flex flex-column gap-2 mb-5 ms-3">
+          <div class="form-check custom-radio">
+            <input class="form-check-input" type="radio" name="mode" [value]="3" [(ngModel)]="modeSelectionne" id="metro">
+            <label class="form-check-label ms-2 fw-semibold" for="metro">Métro / Bus</label>
+          </div>
+          <div class="form-check custom-radio">
+            <input class="form-check-input" type="radio" name="mode" [value]="2" [(ngModel)]="modeSelectionne" id="marche">
+            <label class="form-check-label ms-2 fw-semibold" for="marche">Marche</label>
+          </div>
+          <div class="form-check custom-radio">
+            <input class="form-check-input" type="radio" name="mode" [value]="1" [(ngModel)]="modeSelectionne" id="velo">
+            <label class="form-check-label ms-2 fw-semibold" for="velo">Vélo</label>
+          </div>
+          <div class="form-check custom-radio">
+            <input class="form-check-input" type="radio" name="mode" [value]="0" [(ngModel)]="modeSelectionne" id="voiture">
+            <label class="form-check-label ms-2 fw-semibold" for="voiture">Voiture</label>
+          </div>
+        </div>
+
+        <h5 class="fw-bold text-center mb-4">Date & Horaire</h5>
+        
+        <div class="mb-4">
+          <label class="form-label fw-semibold mb-2">Départ :</label>
+          <input type="date" [(ngModel)]="dateDepart" class="form-control rounded-pill border-teal mb-2 px-3 text-muted">
+          <input type="time" [(ngModel)]="heureDepart" class="form-control rounded-pill border-teal px-3 text-muted">
+        </div>
+
+        <div>
+          <label class="form-label fw-semibold mb-2">Arrivé :</label>
+          <input type="date" class="form-control rounded-pill border-teal mb-2 px-3 text-muted">
+          <input type="time" class="form-control rounded-pill border-teal px-3 text-muted">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-8 col-lg-9">
+      
+      <div *ngIf="itineraires.length === 0 && !enChargement && !erreurMessage" class="alert alert-info rounded-4 border-teal text-center shadow-sm">
+        Saisissez un point de départ et une arrivée pour voir les itinéraires.
+      </div>
+
+      <div *ngIf="erreurMessage" class="alert alert-danger rounded-4 text-center shadow-sm d-flex flex-column align-items-center justify-content-center py-4">
+        <i class="bi bi-exclamation-triangle-fill text-danger mb-2" style="font-size: 3rem;"></i>
+        <h5 class="fw-bold text-dark mb-1">Oups !</h5>
+        <p class="mb-0 text-muted">{{ erreurMessage }}</p>
+      </div>
+
+      <div *ngIf="itineraires.length > 0" class="results-container border-teal rounded-4 shadow-sm bg-white">
+        
+        <div *ngFor="let route of itineraires" 
+             class="route-item p-4 border-bottom border-teal position-relative"
+             (click)="ouvrirGoogleMaps()" 
+             title="Ouvrir cet itinéraire dans Google Maps">
+          
+          <div class="d-flex justify-content-between align-items-start mb-4 pb-3 border-bottom">
+            <div>
+              <h4 class="fw-bold text-teal mb-1">{{ route.formatted_duration || 'Durée inconnue' }}</h4>
+              
+              <div class="text-muted small fw-semibold mt-2 d-flex align-items-center">
+                <i class="bi bi-calendar-event text-secondary me-1"></i> 
+                {{ dateRecherche ? (dateRecherche | date:'dd/MM/yyyy') : "Aujourd'hui" }}
+                <span class="mx-2 text-secondary opacity-50">|</span>
+                <i class="bi bi-clock text-secondary me-1"></i> 
+                
+                <span class="text-dark fw-bold">{{ getHeureDepart(route) }}</span>
+                <i class="bi bi-arrow-right mx-2 text-secondary"></i> 
+                <span class="text-teal fw-bold">{{ getHeureArrivee(route) }}</span>
+              </div>
+            </div>
+            
+            <div class="d-flex align-items-center mt-2">
+              <span class="badge bg-teal rounded-pill px-3 py-2 fs-6 me-3">{{ route.formatted_distance || 'Distance inconnue' }}</span>
+              <i class="bi bi-box-arrow-up-right text-secondary fs-5"></i>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center text-center px-2 py-3 mt-3">
+            
+            <div class="step-location" style="width: 120px;">
+              <h6 class="mb-1 fw-bold text-wrap mx-auto text-uppercase text-teal">{{ departRecherche }}</h6>
+            </div>
+            
+            <div class="step-connection flex-grow-1 d-flex flex-column align-items-center px-3 position-relative">
+              
+              <span class="direction-text fw-bold text-dark mb-1 text-uppercase text-center" style="top: -30px; font-size: 0.75rem; width: 100%;">
+                {{ route.title || route.summary || 'Itinéraire recommandé' }}
+              </span>
+
+              <i class="bi fs-2 mb-1" 
+                 [ngClass]="{
+                   'bi-car-front text-teal': modeRecherche == 0,
+                   'bi-bicycle text-teal': modeRecherche == 1,
+                   'bi-person-walking text-teal': modeRecherche == 2,
+                   'bi-train-front text-teal': modeRecherche == 3
+                 }"></i>
+              
+              <div class="dotted-line w-100"></div>
+              
+              <span class="step-time mt-2 fw-bold text-muted" style="font-size: 0.85rem;">{{ route.formatted_duration }}</span>
+            </div>
+
+            <div class="step-location" style="width: 120px;">
+              <h6 class="mb-1 fw-bold text-wrap mx-auto text-uppercase text-teal">{{ arriveeRecherche }}</h6>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
