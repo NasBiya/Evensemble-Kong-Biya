@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FavorisService } from '../favoris.service'; //Importer le service
+import { FavoritesService } from '../favoris.service'; // Importer le service
 
 @Component({
   selector: 'app-favoris',
@@ -14,16 +14,24 @@ export class FavorisComponent implements OnInit {
   // Le tableau qui va recevoir les favoris pour l'affichage
   mesFavoris: any[] = [];
 
-  constructor(private favorisService: FavorisService) {}
+  constructor(private favoritesService: FavoritesService) {}
 
   // Quand la page se charge, on récupère la liste
-  ngOnInit() {
-    this.mesFavoris = this.favorisService.getFavoris();
+  ngOnInit(): void {
+    // On demande au service de charger les favoris depuis MongoDB
+    this.favoritesService.chargerFavoris();
+
+    // On écoute la liste en temps réel
+    this.favoritesService.favoris$.subscribe({
+      next: (favs) => {
+        this.mesFavoris = favs;
+      }
+    });
   }
 
   // Fonction pour retirer un favori directement depuis cette page
   retirer(event: any) {
-    this.favorisService.toggleFavori(event);
-    this.mesFavoris = this.favorisService.getFavoris(); // Mise à jour de la liste
+    // Le service gère la suppression, et l'observable
+    this.favoritesService.toggleFavori(event);
   }
 }

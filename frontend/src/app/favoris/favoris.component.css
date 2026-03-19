@@ -1,4 +1,34 @@
+/* Couleurs de ton thème */
 .text-teal { color: #008CBA !important; }
 .bg-teal { background-color: #008CBA !important; }
-.btn-teal { background-color: #008CBA; border-color: #008CBA; }
-.btn-teal:hover { background-color: #007196; border-color: #007196; }
+
+.btn-teal {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+}
+
+.btn-teal:hover {
+    background-color: #007196;
+    color: white;
+}
+
+/* Effet très propre au survol de la carte */
+.event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Légère animation sur l'étoile au survol */
+.bi-star-fill {
+    transition: transform 0.2s ease;
+}
+
+button:hover .bi-star-fill {
+    transform: scale(1.2);
+    color: #ffc107 !important;
+}

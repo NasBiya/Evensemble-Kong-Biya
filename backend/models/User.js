@@ -12,7 +12,15 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  favoris: [{
+    id: { type: String, required: true }, // L'ID ou lien unique de SerpApi
+    title: String,
+    thumbnail: String,
+    displayDate: String,
+    location: String,
+    link: String
+  }]
 });
 
 UserSchema.pre('save', async function() {

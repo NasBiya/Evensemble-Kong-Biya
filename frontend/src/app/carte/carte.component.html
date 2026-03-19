@@ -133,7 +133,7 @@
           <i
             class="bi position-absolute top-0 end-0 m-2 fs-5"
             style="z-index: 10; text-shadow: 0 0 3px rgba(0,0,0,0.3);"
-            [ngClass]="favorisService.isFavori(event.title) ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
+            [ngClass]="favoritesService.isFavori(event.title) ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
             (click)="onToggleFavori(event, $event)"
           ></i>
         </div>

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
-import { FavorisService } from '../favoris.service';
+import { FavoritesService } from '../favoris.service';
 import { EventService, GoogleEvent } from '../services/event.service';
 import { SearchService } from '../services/search.service';
 
@@ -43,16 +43,19 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   constructor(
-    public favorisService: FavorisService,
+    public favoritesService: FavoritesService,
     private eventService: EventService,
     private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
-    this.searchSub = this.searchService.query$.subscribe(query => {
-      this.loadEvents(query);
-    });
-  }
+  // On force le rafraîchissement des favoris au cas où
+  this.favoritesService.chargerFavoris();
+
+  this.searchSub = this.searchService.query$.subscribe(query => {
+    this.loadEvents(query);
+  });
+}
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -317,6 +320,6 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onToggleFavori(event: GoogleEvent, mouseEvent: Event): void {
     mouseEvent.stopPropagation();
-    this.favorisService.toggleFavori(event);
+    this.favoritesService.toggleFavori(event);
   }
 }
