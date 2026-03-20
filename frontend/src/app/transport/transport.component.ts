@@ -123,7 +123,7 @@ export class TransportComponent implements OnInit{
     this.itineraires = [];
     this.erreurMessage = '';
 
-    // ⏱️ --- LE NOUVEAU CALCUL DU TIMESTAMP --- ⏱️
+    //LE NOUVEAU CALCUL DU TIMESTAMP 
     let timestampDepart = '';
     
     if (this.dateDepart || this.heureDepart) {
@@ -145,7 +145,7 @@ export class TransportComponent implements OnInit{
     }
     // -------------------------------------------
 
-    // 🚀 On lance la recherche en envoyant notre timestamp (timestampDepart) à la fin !
+    // On lance la recherche en envoyant notre timestamp (timestampDepart) à la fin !
     this.transportService.rechercherTrajet(this.depart, this.arrivee, this.modeSelectionne, timestampDepart).subscribe({
       next: (data) => {
         if (!data || data.length === 0) {
