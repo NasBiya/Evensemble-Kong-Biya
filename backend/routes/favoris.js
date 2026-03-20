@@ -41,7 +41,7 @@ router.post('/', authMiddleware, async (req, res) => {
   } catch (error) {
     // la raison de l'erreur dans terminal Node.js !
     console.error("Erreur Backend Favoris :", error); 
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: 'Erreur serveur!' });
   }
 });
 
