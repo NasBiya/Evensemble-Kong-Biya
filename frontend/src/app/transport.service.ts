@@ -10,8 +10,7 @@ export class TransportService {
 
   constructor(private http: HttpClient) {}
 
-  // Fonction pour appeler notre Backend
-  // On ajoute "departureTime" comme texte optionnel (?)
+  // Fonction pour appeler au Backend
   rechercherTrajet(depart: string, arrivee: string, mode: number, departureTime?: string): Observable<any[]> {
     let url = `${this.apiUrl}?depart=${depart}&arrivee=${arrivee}&mode=${mode}`;
     

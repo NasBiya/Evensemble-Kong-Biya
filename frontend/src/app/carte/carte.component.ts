@@ -17,12 +17,13 @@ import { SearchService } from '../services/search.service';
   styleUrl: './carte.component.css'
 })
 export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  // variables de la carte
   private map: any;
   selectedEvent: GoogleEvent | null = null;
   private markers: Map<string, L.Marker> = new Map();
   private searchSub!: Subscription;
 
+  // --- VARIABLES DES DONNÉES ---
   allEvents: GoogleEvent[] = [];
   events: GoogleEvent[] = [];
 
@@ -30,6 +31,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string | null = null;
   private mapReady = false;
 
+  // --- VARIABLES DES FILTRES ---
   filterAujourdhui = false;
   filterDemain = false;
   filterDate = false;
@@ -38,11 +40,13 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   filterRating3_5 = false;
   filterTout = true;
 
+  // Dictionnaire pour traduire les mois de l'API SerpApi (ex: "jan" -> 0)
   private readonly MONTHS: Record<string, number> = {
     jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
     jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
   };
 
+  // --- CONSTRUCTEUR ---
   constructor(
     public favoritesService: FavoritesService,
     private eventService: EventService,
@@ -58,6 +62,8 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  // --- CYCLES DE VIE ANGULAR ---
+  // S'exécute au démarrage du composant
   ngOnInit(): void {
   // On force le rafraîchissement des favoris au cas où
   this.favoritesService.chargerFavoris();
@@ -77,8 +83,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.map) this.map.remove();
   }
 
-  // ── Data loading ──────────────────────────────────────────────────────────
-
+  //--- CHARGEMENT DES DONNÉES ---
   private loadEvents(query: string): void {
     this.loading = true;
     this.error = null;
@@ -86,16 +91,19 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     this.events = [];
     this.clearMarkers();
 
+    // On demande les événements au Backend
     this.eventService.getEvents(query).subscribe({
       next: (data) => {
+        // On formate les données pour qu'elles soient propres
         this.allEvents = data.map((e, i) => ({
           ...e,
           id: e.id ?? `event-${e.title?.replace(/\s+/g, '-').toLowerCase()}-${i}`,
           displayDate: e.date?.when ?? e.date?.start_date ?? '',
           location: e.address?.join(', ') ?? '',
         }));
-        this.applyFilters();
+        this.applyFilters(); // On applique les filtres actuels
         this.loading = false;
+        // Si la carte est prête, on envoie les adresses au backend pour avoir les coordonnées GPS
         if (this.mapReady) {
           this.geocodeAndPlaceMarkers();
         }
@@ -108,8 +116,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // ── Filters ───────────────────────────────────────────────────────────────
-
+  // --- SYSTÈME DE FILTRES ---
   applyFilters(): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -119,7 +126,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.events = this.allEvents.filter(event => {
 
-      // ── Date filter ──────────────────────────────────────────────────────
+      // Date filter
       if (this.filterAujourdhui || this.filterDemain || (this.filterDate && this.filterCustomDate)) {
         const startDate = this.parseEventDate(event.displayDate ?? '');
         const endDate = this.parseEventEndDate(event.displayDate ?? '');
@@ -144,7 +151,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
 
-      // ── Rating filter ────────────────────────────────────────────────────
+      //Rating filter
       if (!this.filterTout) {
         const rating = event.venue?.rating ?? null;
         if (this.filterRating1_3 && this.filterRating3_5) {
@@ -168,7 +175,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // ── Date parsing ──────────────────────────────────────────────────────────
+  // Date parsing
 
   private parseEventDate(dateStr: string): Date | null {
     if (!dateStr) return null;
@@ -222,30 +229,35 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     this.applyFilters();
   }
 
-  // ── Map ───────────────────────────────────────────────────────────────────
-
+  //--- GESTION DE LA CARTE (LEAFLET) ---
+  // Initialise Leaflet
   private initMap(): void {
     this.map = L.map('map').setView([48.0061, 0.1996], 13);
+    // Ajout du fond de carte visuel OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(this.map);
   }
 
+// Enlève tous les marqueurs actuels
   private clearMarkers(): void {
     this.markers.forEach(m => m.remove());
     this.markers.clear();
   }
 
+  // Décale très légèrement un marqueur pour éviter qu'il en cache un autre
   private applyOffset(lat: number, lng: number, index: number): [number, number] {
     const offset = 0.0003;
     const angle = (index * 60) * (Math.PI / 180);
     return [lat + offset * Math.cos(angle), lng + offset * Math.sin(angle)];
   }
 
+  // Ajoute un marqueur (la petite goutte) sur la carte
   private addMarker(event: GoogleEvent, index: number): void {
     if (event.lat == null || event.lng == null) return;
 
+    // On compte s'il y a déjà des événements EXACTEMENT au même endroit
     let sameLocationCount = 0;
     this.markers.forEach((_, id) => {
       const existingEvent = this.events.find(e => e.id === id);
@@ -254,10 +266,12 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    // Si oui, on décale le point. Sinon, on utilise les vraies coordonnées
     const [lat, lng] = sameLocationCount > 0
       ? this.applyOffset(event.lat, event.lng, sameLocationCount)
       : [event.lat, event.lng];
 
+      // Personnalisation de l'icône
     const myIcon = L.icon({
       iconUrl: 'assets/marker-icon.png',
       iconSize: [41, 41],
@@ -265,9 +279,11 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       popupAnchor: [1, -34],
     });
 
+    // On place le marqueur
     const marker = L.marker([lat, lng], { icon: myIcon }).addTo(this.map);
     const adressePropre = event.location ? event.location.replace(/'/g, "\\'") : '';
 
+    // HTML contenu dans la petite bulle d'information
     const popupContent = `
       <div style="width: 200px; text-align: center;">
 
@@ -282,16 +298,19 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       </div>
     `;
 
-    marker.bindPopup(popupContent);
+    marker.bindPopup(popupContent); // On sauvegarde le marqueur dans notre dictionnaire
     this.markers.set(event.id, marker);
   }
 
+  // --- APPEL AU BACKEND POUR LE GPS ---
   private async geocodeAndPlaceMarkers(): Promise<void> {
+    // On rassemble les adresses de tous les événements
     const addresses = this.allEvents
       .filter(e => e.address?.length && e.id)
       .map(e => ({ id: e.id!, address: e.address.join(', ') }));
 
     try {
+      // On demande au backend (geocode.js) de les traduire en coordonnées
       const res = await fetch('/api/geocode/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -299,6 +318,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       const results: { id: string, lat: string, lon: string }[] = await res.json();
 
+      // On met à jour nos événements avec les coordonnées reçues et on place les points
       results.forEach((result, index) => {
         if (!result.lat || !result.lon) return;
 
@@ -320,6 +340,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // --- INTERACTIONS DE L'UTILISATEUR ---
   onSelectEvent(event: GoogleEvent): void {
     this.selectedEvent = event;
     const marker = this.markers.get(event.id);
@@ -329,6 +350,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  //clique sur l'etoile pour favoris
   onToggleFavori(event: GoogleEvent, mouseEvent: Event): void {
     mouseEvent.stopPropagation();
     this.favoritesService.toggleFavori(event);

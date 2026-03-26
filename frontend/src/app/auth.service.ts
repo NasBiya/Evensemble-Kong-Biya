@@ -11,10 +11,14 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // --- INSCRIPTION ---
+  // Envoie l'email et le mot de passe au Backend pour créer un compte
   register(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/register`, { email, password });
   }
 
+  //--- CONNEXION ---
+  // Envoie les identifiants. Si c'est bon, le serveur renvoie un Token JWT
   login(email: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(reponse => {
@@ -29,6 +33,7 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
+  // --- DÉCONNEXION ---
   logout() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -36,6 +41,7 @@ export class AuthService {
         headers: { 'Authorization': `Bearer ${token}` }
       }).pipe(
         tap(() => {
+          //destruction du token
           localStorage.removeItem('token');
         })
       );

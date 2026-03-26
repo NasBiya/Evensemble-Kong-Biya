@@ -16,8 +16,8 @@ export class TransportComponent implements OnInit{
   depart: string = '';
   arrivee: string = '';
   modeSelectionne: number = 3; // Par défaut : 3 (Métro/Bus)
-  modeRecherche: number = 3;   // NOUVEAU : Ce qui fige l'icône des résultats !
-  // Nouvelles variables pour lire ce que tu tapes dans le menu
+  modeRecherche: number = 3;   // Ce qui fige l'icône des résultats
+  // variables pour lire ce que tu tapes dans le menu
   dateDepart: string = '';
   heureDepart: string = '';
   // Les variables figées pour l'affichage des résultats !
@@ -39,7 +39,7 @@ export class TransportComponent implements OnInit{
     });
   }
 
-  // 1. Calcule l'heure de départ parfaite
+  // Calcule l'heure de départ parfaite
   getHeureDepart(route: any): string {
     // On regarde l'heure figée
     if (this.heureRecherche) {
@@ -63,7 +63,7 @@ export class TransportComponent implements OnInit{
     return maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  // 2. Calcule l'heure d'arrivée correspondante
+  // Calcule l'heure d'arrivée correspondante
   getHeureArrivee(route: any): string {
     // On regarde l'heure figée ici aussi
     if (!this.heureRecherche && route.legs && route.legs[0]?.arrival_time) {
@@ -104,7 +104,7 @@ export class TransportComponent implements OnInit{
   itineraires: any[] = [];
   enChargement: boolean = false;
 
-  // Nouvelle variable pour stocker le texte de l'erreur
+  // variable pour stocker le texte de l'erreur
   erreurMessage: string = '';
 
   lancerRecherche() {
@@ -123,7 +123,7 @@ export class TransportComponent implements OnInit{
     this.itineraires = [];
     this.erreurMessage = '';
 
-    //LE NOUVEAU CALCUL DU TIMESTAMP 
+    //CALCUL DU TIMESTAMP 
     let timestampDepart = '';
     
     if (this.dateDepart || this.heureDepart) {
@@ -145,7 +145,7 @@ export class TransportComponent implements OnInit{
     }
     // -------------------------------------------
 
-    // On lance la recherche en envoyant notre timestamp (timestampDepart) à la fin !
+    // On lance la recherche en envoyant notre timestamp (timestampDepart) à la fin
     this.transportService.rechercherTrajet(this.depart, this.arrivee, this.modeSelectionne, timestampDepart).subscribe({
       next: (data) => {
         if (!data || data.length === 0) {
@@ -163,7 +163,7 @@ export class TransportComponent implements OnInit{
     });
   }
 
-  // Nouvelle fonction pour rediriger vers Google Maps
+  //pour rediriger vers Google Maps
   ouvrirGoogleMaps() {
     // On traduit ton "modeSelectionne" (codes SerpApi) en codes compris par Google Maps
     let googleMode = 'transit'; // Métro/Bus par défaut

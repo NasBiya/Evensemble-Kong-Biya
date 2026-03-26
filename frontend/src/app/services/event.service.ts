@@ -33,8 +33,8 @@ export interface GoogleEvent {
   lng?: number;
 }
 
-@Injectable({
-  providedIn: 'root'
+@Injectable({ // Dispo partout dans l'application
+  providedIn: 'root' 
 })
 export class EventService {
   private apiUrl = '/api/events';
