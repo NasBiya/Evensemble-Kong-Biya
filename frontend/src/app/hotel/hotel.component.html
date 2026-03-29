@@ -1,35 +1,142 @@
-<article class="hotel-card" *ngFor="let hotel of hotels">
-  <div class="hotel-image">
-    <img [src]="hotel.imageUrl" [alt]="hotel.name">
-  </div>
+<div class="container-fluid h-100">
+  <div class="row h-100">
 
-  <div class="hotel-info">
-    <div class="info-top">
-      <h3>{{ hotel.name }}</h3>
-      <div class="price-label">
-        MIN <span class="amount">{{ hotel.price }}$</span>
+    <!-- Sidebar filtres -->
+    <div class="col-md-2 border-end p-4 bg-white d-none d-lg-block" style="height: calc(100vh - 80px); overflow-y: auto;">
+      <h6 class="fw-bold mb-3">FILTRES</h6>
+
+      <!-- Rating filters -->
+      <div class="mb-4">
+        <p class="small fw-bold text-muted mb-2">AVIS</p>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox"
+            [(ngModel)]="filterTout"
+            (change)="onToutChange()"
+            id="filterTout">
+          <label class="small" for="filterTout">Tout</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox"
+            [(ngModel)]="filterRating1_3"
+            (change)="onRatingFilterChange()"
+            id="filterRating1_3">
+          <label class="small" for="filterRating1_3">1–3</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox"
+            [(ngModel)]="filterRating3_5"
+            (change)="onRatingFilterChange()"
+            id="filterRating3_5">
+          <label class="small" for="filterRating3_5">3–5</label>
+        </div>
+      </div>
+
+      <!-- Price filter -->
+      <div>
+        <p class="small fw-bold text-muted mb-2">PRIX</p>
+        <div class="price-filter-group">
+          <input type="number" class="form-control form-control-sm"
+            [(ngModel)]="selectedMinPrice"
+            (input)="onPriceChange()"
+            placeholder="Min">
+          <span class="price-separator">-</span>
+          <input type="number" class="form-control form-control-sm"
+            [(ngModel)]="selectedMaxPrice"
+            (input)="onPriceChange()"
+            placeholder="Max">
+        </div>
       </div>
     </div>
 
-    <div class="specs-grid">
-      <div class="spec">{{ hotel.specs.guests }}</div>
-      <div class="spec">{{ hotel.specs.bedrooms }}</div>
+    <!-- Main content - Hotels list -->
+    <div class="col-md-10 col-lg-10 p-4 overflow-auto" style="height: calc(100vh - 80px);">
       
-      <div class="spec" *ngFor="let amenity of hotel.amenities | slice:0:4">
-        {{ amenity }}
+      <!-- Search section -->
+      <div class="search-section mb-5">
+        <h3 class="text-teal fw-bold mb-4">Logements</h3>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-8 col-lg-6 d-flex flex-column gap-3">
+            <input type="text" [(ngModel)]="ville" class="form-control rounded-pill border-teal px-4 py-2 fw-medium" placeholder="City...">
+            
+            <div class="row g-2">
+              <div class="col-6">
+                <input type="date" [(ngModel)]="checkIn" class="form-control rounded-pill border-teal px-4 py-2 fw-medium" placeholder="Check-in...">
+              </div>
+              <div class="col-6">
+                <input type="date" [(ngModel)]="checkOut" class="form-control rounded-pill border-teal px-4 py-2 fw-medium" placeholder="Check-out...">
+              </div>
+            </div>
+            
+            <div class="text-center mt-3">
+              <button (click)="search()" class="btn btn-outline-teal rounded-pill px-5 py-2 fw-bold text-uppercase">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                Chercher
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-5 text-muted">
+        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+        Chargement des hôtels…
+      </div>
+
+      <!-- Empty - only show after a search has been performed -->
+      <div *ngIf="!loading && hasSearched && filteredHotels.length === 0" class="text-muted text-center py-5">
+        Aucun hôtel trouvé.
+      </div>
+
+      <!-- Initial message - only show before any search -->
+      <div *ngIf="!loading && !hasSearched" class="alert alert-info rounded-4 border-teal text-center shadow-sm">
+        Saisissez les dates d'arrivée et de départ pour voir les hôtels disponibles.
+      </div>
+
+      <!-- Hotel cards grid -->
+      <div class="hotels-grid">
+        <article class="hotel-card" *ngFor="let hotel of filteredHotels">
+          <div class="hotel-image">
+            <img [src]="hotel.imageUrl" [alt]="hotel.name">
+          </div>
+
+          <div class="hotel-info">
+            <div class="info-top">
+              <h3 class="hotel-name">{{ hotel.name }}</h3>
+              <div class="price-label">
+                MIN <span class="amount">{{ hotel.price }}$</span>
+              </div>
+            </div>
+
+            <div class="specs-grid">
+              <div class="spec" *ngFor="let info of hotel.essentialInfo | slice:0:6">
+                {{ info }}
+              </div>
+              <div class="spec text-muted" *ngIf="hotel.essentialInfo.length === 0">
+                <small>Détails indisponibles</small>
+              </div>
+            </div>
+
+            <div class="info-bottom">
+              <div class="stars">
+                <span class="rating-stars">
+                  <i class="bi bi-star-fill" *ngFor="let i of [1,2,3,4,5]" [class.inactive]="i > hotel.rating"></i>
+                </span>
+              </div>
+              <a [href]="hotel.voir_prix" 
+                 target="_blank" 
+                 class="view-btn">
+                VOIR LES PRIX
+              </a>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
 
-    <div class="info-bottom">
-      <div class="stars">
-        <span>Rating: {{ hotel.rating }}</span>
-        <span>{{ hotel.voir_prix }}</span>
-      </div>
-      <a href="https://{{ hotel.voir_prix }}" 
-   target="_blank" 
-   class="view-btn">
-   VOIR LES PRIX
-</a>
-    </div>
   </div>
-</article>
+</div>

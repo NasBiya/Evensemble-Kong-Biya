@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'favoris', component: FavorisComponent, canActivate: [AuthGuard] },
   { path: 'parametres', component: ParametresComponent, canActivate: [AuthGuard] },
   { path: 'transport', component: TransportComponent, canActivate: [AuthGuard] },
+  { path: 'hotel', component: HotelComponent, canActivate: [AuthGuard] },
   { path: '**', component: ErreurComponent },    // Si l'URL n'existe pas, retour accueil
-  { path: 'hotel', component: HotelComponent, canActivate: [AuthGuard] }
 
 ];

@@ -4,7 +4,7 @@ const axios = require('axios');
 const router = express.Router();
 
 
-router.get('/hotels', async (req, res) => {
+router.get('/', async (req, res) => {
     // On récupère les critères de recherche envoyés par le Frontend dans l'URL
     const { city, check_in, check_out } = req.query;
     
@@ -17,13 +17,13 @@ router.get('/hotels', async (req, res) => {
                 check_in_date: check_in,
                 check_out_date: check_out,
                 api_key: process.env.GOOGLE_API_KEY,
-                currency: 'EUR',
-                gl: 'fr',
             }
         });
         // SerpApi renvoie beaucoup de données (carte, filtres, etc.). 
         // On isole et on renvoie uniquement la liste des hôtels (contenue dans "properties")
-        res.json(response.data.properties);
+        const properties = response.data.properties || [];
+        
+        res.json(properties);
     } catch (error) {
         res.status(500).json({ error: 'Échec de la récupération des hôtels' });
     }
