@@ -30,6 +30,8 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   error: string | null = null;
   private mapReady = false;
+  isGeocoding = false;  // Track if geocoding is in progress
+  private pendingEventClick: GoogleEvent | null = null;  // Queue a click if it happens during geocoding
 
   // --- VARIABLES DES FILTRES ---
   filterAujourdhui = false;
@@ -112,6 +114,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
         // Si la carte est prête, on envoie les adresses au backend pour avoir les coordonnées GPS
         if (this.mapReady) {
+          this.isGeocoding = true;  // Set geocoding flag
           this.geocodeAndPlaceMarkers();
         }
       },
@@ -180,6 +183,17 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
         this.addMarker(event, index);
       }
     });
+
+    // Auto-select and show first event if available
+    if (this.events.length > 0) {
+      if (this.isGeocoding) {
+        // During initial load, just set it and let the finally block handle calling onSelectEvent
+        this.selectedEvent = this.events[0];
+      } else {
+        // If geocoding is already done (filter change), immediately show the first event on map
+        this.onSelectEvent(this.events[0]);
+      }
+    }
   }
 
   // Date parsing
@@ -344,11 +358,28 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } catch (err) {
       console.error('Bulk geocoding error:', err);
+    } finally {
+      // Finalize geocoding and execute any pending click or auto-select first event
+      this.isGeocoding = false;
+      if (this.pendingEventClick) {
+        const clickedEvent = this.pendingEventClick;
+        this.pendingEventClick = null;
+        this.onSelectEvent(clickedEvent);
+      } else if (this.selectedEvent && this.selectedEvent.lat != null && this.selectedEvent.lng != null) {
+        // Auto-select first event if it's the selected one and now has coordinates
+        this.onSelectEvent(this.selectedEvent);
+      }
     }
   }
 
   // --- INTERACTIONS DE L'UTILISATEUR ---
   onSelectEvent(event: GoogleEvent): void {
+    // Queue click if geocoding still in progress
+    if (this.isGeocoding) {
+      this.pendingEventClick = event;
+      return;
+    }
+
     this.selectedEvent = event;
     const marker = this.markers.get(event.id);
     if (marker && event.lat != null && event.lng != null) {
