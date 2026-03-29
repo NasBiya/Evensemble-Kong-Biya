@@ -1,0 +1,35 @@
+<article class="hotel-card" *ngFor="let hotel of hotels">
+  <div class="hotel-image">
+    <img [src]="hotel.imageUrl" [alt]="hotel.name">
+  </div>
+
+  <div class="hotel-info">
+    <div class="info-top">
+      <h3>{{ hotel.name }}</h3>
+      <div class="price-label">
+        MIN <span class="amount">{{ hotel.price }}$</span>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec">{{ hotel.specs.guests }}</div>
+      <div class="spec">{{ hotel.specs.bedrooms }}</div>
+      
+      <div class="spec" *ngFor="let amenity of hotel.amenities | slice:0:4">
+        {{ amenity }}
+      </div>
+    </div>
+
+    <div class="info-bottom">
+      <div class="stars">
+        <span>Rating: {{ hotel.rating }}</span>
+        <span>{{ hotel.voir_prix }}</span>
+      </div>
+      <a href="https://{{ hotel.voir_prix }}" 
+   target="_blank" 
+   class="view-btn">
+   VOIR LES PRIX
+</a>
+    </div>
+  </div>
+</article>

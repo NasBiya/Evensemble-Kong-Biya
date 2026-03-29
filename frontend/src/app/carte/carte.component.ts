@@ -291,7 +291,7 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
           <h6 style="margin: 0; text-transform: uppercase; font-weight: bold;">${event.title}</h6>
           <p style="font-size: 12px; margin: 5px 0;">${event.displayDate} · ${event.location}</p>
           <div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px;">
-            <button style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">LOGEMENT</button>
+            <a routerLink="/hotel" style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">LOGEMENT</a>
             <button onclick="window.allerVersTransport('${adressePropre}')" style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">TRANSPORT</button>
           </div>
         </div>

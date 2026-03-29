@@ -10,6 +10,7 @@ import { FavorisComponent } from './favoris/favoris.component';
 import { ParametresComponent } from './parametres/parametres.component';
 import { TransportComponent } from './transport/transport.component';
 import { AuthGuard } from './auth.guard';
+import { HotelComponent } from './hotel/hotel.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },           // Page d'accueil par défaut
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'favoris', component: FavorisComponent, canActivate: [AuthGuard] },
   { path: 'parametres', component: ParametresComponent, canActivate: [AuthGuard] },
   { path: 'transport', component: TransportComponent, canActivate: [AuthGuard] },
-  { path: '**', component: ErreurComponent }     // Si l'URL n'existe pas, retour accueil
+  { path: '**', component: ErreurComponent },    // Si l'URL n'existe pas, retour accueil
+  { path: 'hotel', component: HotelComponent, canActivate: [AuthGuard] }
 
 ];
