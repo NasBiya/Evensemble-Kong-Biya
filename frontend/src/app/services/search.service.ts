@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  private querySubject = new BehaviorSubject<string>('événements Le Mans');
+  private querySubject = new BehaviorSubject<string>('Le Mans');
   query$ = this.querySubject.asObservable();
 
   setQuery(query: string): void {
