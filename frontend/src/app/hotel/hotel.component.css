@@ -94,8 +94,11 @@
   width: 30%;
   min-width: 200px;
   max-width: 280px;
+  height: 200px;
   overflow: hidden;
   border-radius: 18px 0 0 18px;
+  flex-shrink: 0;
+  background-color: #f5f5f5;
 }
 
 .hotel-image img {
@@ -103,6 +106,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  background-color: #f5f5f5;
 }
 
 .hotel-info {

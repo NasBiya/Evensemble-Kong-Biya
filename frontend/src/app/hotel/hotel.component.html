@@ -101,7 +101,9 @@
       <div class="hotels-grid">
         <article class="hotel-card" *ngFor="let hotel of filteredHotels">
           <div class="hotel-image">
-            <img [src]="hotel.imageUrl" [alt]="hotel.name">
+            <img [src]="hotel.imageUrl" 
+                 [alt]="hotel.name"
+                 (error)="$any($event.target).src='assets/no-image.svg'">
           </div>
 
           <div class="hotel-info">

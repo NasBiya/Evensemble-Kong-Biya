@@ -49,6 +49,19 @@ export class HotelService {
             pricingUrl = `https://www.google.com/travel/search?q=${hotelName}+${cityName}`;
           }
           
+          // Extract image URL from hotel images array
+          let imageUrl = 'assets/no-image.svg';
+          if (hotel.images && hotel.images.length > 0) {
+            const firstImage = hotel.images[0];
+            // Handle case where image is an object with thumbnail/original_image properties
+            if (typeof firstImage === 'object') {
+              imageUrl = firstImage.thumbnail || firstImage.original_image || imageUrl;
+            } else {
+              // Handle case where image is already a URL string
+              imageUrl = firstImage;
+            }
+          }
+
           return {
             id: hotel.property_token,
             name: hotel.name,
@@ -56,7 +69,7 @@ export class HotelService {
             voir_prix: pricingUrl,
             price: hotel.rate_per_night?.extracted_lowest || 0,
             rating: hotel.overall_rating || 0,
-            imageUrl: hotel.images?.[0]?.thumbnail || hotel.images?.[0]?.original_image || 'assets/no_image.jpg',
+            imageUrl: imageUrl,
             amenities: hotel.amenities || [],
             essentialInfo: essentialInfo,
             specs: {

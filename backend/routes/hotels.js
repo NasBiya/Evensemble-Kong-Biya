@@ -22,7 +22,16 @@ router.get('/', async (req, res) => {
         // SerpApi renvoie beaucoup de données (carte, filtres, etc.). 
         // On isole et on renvoie uniquement la liste des hôtels (contenue dans "properties")
         const properties = response.data.properties || [];
-        
+         // Log for debugging
+        console.log(`Found ${properties.length} hotels for ${city}`);
+        if (properties.length > 0) {
+          const firstHotel = properties[0];
+          console.log('First hotel has images?', !!firstHotel.images);
+          if (firstHotel.images && firstHotel.images.length > 0) {
+            console.log('First image type:', typeof firstHotel.images[0]);
+            console.log('First image (first 100 chars):', JSON.stringify(firstHotel.images[0]).substring(0, 100));
+          }
+        }
         res.json(properties);
     } catch (error) {
         res.status(500).json({ error: 'Échec de la récupération des hôtels' });
