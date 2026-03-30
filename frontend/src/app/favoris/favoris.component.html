@@ -14,7 +14,7 @@
       <div class="card event-card h-100 border rounded-4 shadow-sm overflow-hidden position-relative bg-white">
         
         <div class="position-relative" style="height: 150px; overflow: hidden;">
-          <img *ngIf="fav.thumbnail" [src]="fav.thumbnail" class="w-100 h-100" style="object-fit: cover;" [alt]="fav.title">
+          <img *ngIf="fav.image || fav.thumbnail" [src]="fav.image || fav.thumbnail" class="w-100 h-100" style="object-fit: cover;" [alt]="fav.title" (error)="$any($event.target).style.display='none'">
           
           <div *ngIf="!fav.thumbnail" class="bg-warning p-3 text-center h-100 d-flex align-items-center justify-content-center">
             <h3 class="fw-bold text-danger mb-0" style="font-family: Impact, sans-serif; font-size: 1.5rem;">

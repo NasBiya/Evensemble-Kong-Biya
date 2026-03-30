@@ -114,11 +114,12 @@
         <!-- Thumbnail or fallback -->
         <div class="position-relative" style="height: 100px; overflow: hidden;">
           <img
-            *ngIf="event.thumbnail"
-            [src]="event.thumbnail"
+            *ngIf="event.image || event.thumbnail"
+            [src]="event.image || event.thumbnail"
             [alt]="event.title"
             class="w-100 h-100"
             style="object-fit: cover;"
+            (error)="$any($event.target).style.display='none'"
           />
           <div
             *ngIf="!event.thumbnail"
