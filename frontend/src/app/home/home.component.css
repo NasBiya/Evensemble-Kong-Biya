@@ -1,0 +1,75 @@
+/* --- RUBAN DE DÉFILEMENT INFINI --- */
+.carousel-container {
+  overflow: hidden; /* Cache ce qui dépasse de l'écran */
+  width: 100%;
+  padding: 10px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  /* L'animation dure 30 secondes, glisse de façon linéaire, et recommence à l'infini */
+  animation: scroll 30s linear infinite; 
+}
+
+/* Pause l'animation quand l'utilisateur met sa souris sur une carte pour pouvoir lire/cliquer */
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+.event-card-wrapper {
+  width: 320px; /* Largeur fixe pour chaque carte */
+  flex-shrink: 0; /* Empêche les cartes de s'écraser */
+}
+
+/* La règle d'animation : on décale la piste de la moitié de sa taille */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } 
+}
+
+/* Effet très propre au survol de la carte (comme sur ta page favoris) */
+.hover-card-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-card-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* --- DIAPORAMA HERO (Fondu croisé) --- */
+.hero-slideshow .slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0; /* Par défaut, les images sont invisibles */
+  /* Animation totale de 15s en boucle infinie */
+  animation: hero-fade 15s infinite;
+}
+
+/* Décalage pour que les images s'enchaînent parfaitement */
+.hero-slideshow .slide-1 { animation-delay: 0s; }  /* Commence tout de suite */
+.hero-slideshow .slide-2 { animation-delay: 5s; }  /* Commence après 5s */
+.hero-slideshow .slide-3 { animation-delay: 10s; } /* Commence après 10s */
+
+/* La clé de l'animation de fondu */
+@keyframes hero-fade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; } /* Apparaît doucement */
+  33%  { opacity: 1; } /* Reste affichée pendant son tour (1/3 du temps) */
+  43%  { opacity: 0; } /* Disparaît doucement */
+  100% { opacity: 0; } /* Reste invisible jusqu'à son prochain tour */
+}
+
+/* Rend la carte cliquable avec la petite main */
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Petit effet de soulèvement supplémentaire au survol */
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 25px rgba(0, 140, 186, 0.4) !important;
+}
