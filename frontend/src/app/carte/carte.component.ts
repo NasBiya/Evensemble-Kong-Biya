@@ -309,7 +309,11 @@ export class CarteComponent implements OnInit, AfterViewInit, OnDestroy {
       <div style="width: 200px; text-align: center;">
 
         <div style="background-color: #008CBA; color: white; padding: 10px; border-radius: 0 0 5px 5px;">
-          <h6 style="margin: 0; text-transform: uppercase; font-weight: bold;">${event.title}</h6>
+          <h6 style="margin: 0; text-transform: uppercase; font-weight: bold;">
+            <a href="${event.link}" target="_blank" style="color: white; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" title="Voir sur le site officiel">
+              ${event.title}
+            </a>
+          </h6>
           <p style="font-size: 12px; margin: 5px 0;">${event.displayDate} · ${event.location}</p>
           <div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px;">
             <button onclick="window.allerVersHotel('${adressePropre}')" style="background: transparent; border: 1px solid white; color: white; border-radius: 10px; font-size: 10px; cursor: pointer;">LOGEMENT</button>
