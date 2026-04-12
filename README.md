@@ -57,7 +57,7 @@ npm install
 # PORT=5000
 
 # Démarrer le serveur
-npm start
+node server.js
 ```
 
 ### Frontend Setup
