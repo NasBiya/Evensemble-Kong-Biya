@@ -51,10 +51,11 @@ cd backend
 npm install
 
 # Créer un fichier .env
-# MONGODB_URI=mongodb://localhost/evensemble
+# MONGODB_URI= mongodb_url
 # JWT_SECRET=your_jwt_secret
-# SERPAPI_KEY=your_serpapi_key
-# PORT=5000
+# SERP_BASE_URL = 'https://serpapi.com/search.json'
+# GOOGLE_API_KEY= your_serpapi_key
+# PORT=3000
 
 # Démarrer le serveur
 node server.js
